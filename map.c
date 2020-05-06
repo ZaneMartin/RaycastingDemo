@@ -34,7 +34,7 @@ struct Map* loadMap(const char* path)
 		return NULL;
 	}
 
-
+	// Copy tile data from the map file into Map structure
 	for (int y = 0; y < height; y++) { 
 		for (int x = 0; x < width; x++) { 
 			fscanf(level, "%d", loadedLevel->tiles + (width * y) + x);
