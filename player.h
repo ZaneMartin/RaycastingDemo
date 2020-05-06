@@ -9,16 +9,16 @@ struct Map;
 // double movespeed - how far the player moves per cycle
 // double angle -     which direction the player is facing, clockwise from +x
 // double turnspeed - how much the player turns per cycle
-struct Player { 
-    double x;
-    double y;
-    double movespeed;
-    double angle;
-    double turnspeed;
+struct Player {
+	double x;
+	double y;
+	double movespeed;
+	double angle;
+	double turnspeed;
 };
 
 // Takes: struct Player*, struct Map*
 // Moves player based on keyboard state, and checks collision with map
-void Player_move(struct Player*, struct Map* );
+void Player_move(struct Player* , struct Map* );
 
 #endif
