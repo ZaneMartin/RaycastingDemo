@@ -8,9 +8,13 @@
 
 static void drawVerticalLine(struct SDL_Renderer* renderer, double distance, int x, int Screen_Height);
 
-// Draws the current camera view to renderer target
-void raycast(struct SDL_Renderer* renderer, struct Map* map, struct Player* player, int Screen_Width, int Screen_Height)
+void raycast(struct SDL_Renderer* renderer, struct SDL_Texture* wall, struct Map* map, struct Player* player, int Screen_Width, int Screen_Height)
 {
+	int wallWidth, wallHeight;
+	// Get the dimensions of the wall texture so we know how to render it
+	SDL_QueryTexture(wall, NULL, NULL, &wallWidth, &wallHeight);
+	
+
 	SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);
 	// Need a pi constant - std library trig functions expect radian input
 	// the camera needs a field of view. Play with this until it looks good? 
@@ -104,18 +108,40 @@ void raycast(struct SDL_Renderer* renderer, struct Map* map, struct Player* play
 				if ((currentAngle < M_PI_2) || (currentAngle > 3 * M_PI_2)) {
 					// increasing x means we hit the right side and need to check at (x, floor(y))
 					if (map->tiles[map->width * (int) floor(y) + (int) x]) {
-					// Draw
-						SDL_SetRenderDrawColor(renderer, 0xFF, 0x00, 0x00, 0xFF);
-						drawVerticalLine(renderer, distance, i + Screen_Width / 2, Screen_Height);
-						break;
+						// calculate which vertical line of the wall texture to draw
+						struct SDL_Rect srcRect = {
+							(int) ((y - floor(y)) * wallWidth ),
+							0,
+							1, 
+							wallHeight };
+						// Caculate where on the screen to draw it
+						struct SDL_Rect destRect = {
+							i + (Screen_Width / 2), 
+							(int) ((Screen_Height / 2) * (1 - 1 / distance)),
+							1, 
+							(int) (Screen_Height / distance) };
+						// Draw
+						SDL_RenderCopy(renderer, wall, &srcRect, &destRect);
+		break; 
 					}
 				} else {
 					// decreasing x means we hit the left side and need to check (x - 1, floor(y))
 					if (map->tiles[map->width * (int) floor(y) + (int) x - 1]){
-						// draw
-						SDL_SetRenderDrawColor(renderer, 0x00, 0xFF, 0x00, 0xFF);
-						drawVerticalLine(renderer, distance, i + Screen_Width / 2, Screen_Height);
-						break;
+						// calculate which vertical line of the wall texture to draw
+						struct SDL_Rect srcRect = {
+							(int) ((y - floor(y)) * wallWidth ),
+							0,
+							1, 
+							wallHeight };
+						// Caculate where on the screen to draw it
+						struct SDL_Rect destRect = {
+							i + (Screen_Width / 2), 
+							(int) ((Screen_Height / 2) * (1 - 1 / distance)),
+							1, 
+							(int) (Screen_Height / distance) };
+						// Draw
+						SDL_RenderCopy(renderer, wall, &srcRect, &destRect);
+		break;
 					}
 				}
 			} else {
@@ -127,16 +153,40 @@ void raycast(struct SDL_Renderer* renderer, struct Map* map, struct Player* play
 				if (currentAngle < M_PI) {
 					// Increasing y means we hit the top and need to check (floor(x), y)
 					if (map->tiles[map->width * (int) y + (int) floor(x)]) {
-						SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0xFF, 0xFF);
-						drawVerticalLine(renderer, distance, i + Screen_Width / 2, Screen_Height);
-						break;
+						// calculate which vertical line of the wall texture to draw
+						struct SDL_Rect srcRect = {
+							(int) ((x - floor(x)) * wallWidth ),
+							0,
+							1, 
+							wallHeight };
+						// Caculate where on the screen to draw it
+						struct SDL_Rect destRect = {
+							i + (Screen_Width / 2), 
+							(int) ((Screen_Height / 2) * (1 - 1 / distance)),
+							1, 
+							(int) (Screen_Height / distance) };
+						// Draw
+						SDL_RenderCopy(renderer, wall, &srcRect, &destRect);
+		break;
 					}
 				} else {
 					// Decreaing y means we hit the bottom and need to check (floor(x), y - 1)
 					if (map->tiles[map->width * ((int) y - 1) + (int) floor(x)]) {
-						SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0x00, 0xFF);
-						drawVerticalLine(renderer, distance, i + Screen_Width / 2, Screen_Height);
-						break;
+						// calculate which vertical line of the wall texture to draw
+						struct SDL_Rect srcRect = {
+							(int) ((x - floor(x)) * wallWidth ),
+							0,
+							1, 
+							wallHeight };
+						// Caculate where on the screen to draw it
+						struct SDL_Rect destRect = {
+							i + (Screen_Width / 2), 
+							(int) ((Screen_Height / 2) * (1 - 1 / distance)),
+							1, 
+							(int) (Screen_Height / distance) };
+						// Draw
+						SDL_RenderCopy(renderer, wall, &srcRect, &destRect);
+		break;
 					}
 				}
 			}

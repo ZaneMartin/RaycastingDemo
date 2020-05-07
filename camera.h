@@ -12,6 +12,6 @@ struct Player;
 //	struct Player*       - a pointer to the player
 //	int Screen_Width     - The width of the screen in pixels
 //	int Screen_Height    - The height of the screen in pixels
-void raycast(struct SDL_Renderer* renderer, struct Map* map, struct Player* player, int Screen_Width, int Screen_Height);
+void raycast(struct SDL_Renderer* renderer, struct SDL_Texture* wall, struct Map* map, struct Player* player, int Screen_Width, int Screen_Height);
 
 #endif

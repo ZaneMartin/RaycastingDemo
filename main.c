@@ -60,6 +60,13 @@ int main(int argc, char* argv[])
 		goto ERROR;
 	}
 
+	struct SDL_Texture* wall = IMG_LoadTexture(primaryRenderer, "wall.png");
+	if (!wall) { 
+		fprintf(stderr, "Error loading wall texture: %s\n", SDL_GetError());
+		errorFlag = 6;
+		goto ERROR;
+	}
+
 	struct Player pc = { 1.5f, 1.5f, 0.05f, M_PI / 2, M_PI / 100};
 
 	for (union SDL_Event event;;) {
@@ -79,14 +86,15 @@ int main(int argc, char* argv[])
 		SDL_RenderClear(primaryRenderer);
 
 		// Then raycast walls
-		raycast(primaryRenderer, map, &pc, Screen_Width, Screen_Height);
+		raycast(primaryRenderer, wall, map, &pc, Screen_Width, Screen_Height);
 
 		SDL_RenderPresent(primaryRenderer);
 	} breakmainloop: ;
 
 ERROR:
 	switch (errorFlag) {
-		case 0: freeMap(map);
+		case 0: SDL_DestroyTexture(wall);
+		case 6: freeMap(map);
 		case 5: SDL_DestroyRenderer(primaryRenderer);
 		case 4: SDL_DestroyWindow(mainWindow);
 		case 3: IMG_Quit();
