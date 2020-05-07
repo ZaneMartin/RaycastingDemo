@@ -6,8 +6,6 @@
 #include "player.h"
 #include "map.h"
 
-static void drawVerticalLine(struct SDL_Renderer* renderer, double distance, int x, int Screen_Height);
-
 void raycast(struct SDL_Renderer* renderer, struct SDL_Texture* wall, struct Map* map, struct Player* player, int Screen_Width, int Screen_Height)
 {
 	int wallWidth, wallHeight;
@@ -192,9 +190,4 @@ void raycast(struct SDL_Renderer* renderer, struct SDL_Texture* wall, struct Map
 			}
 		}
 	}
-}
-
-static void drawVerticalLine(struct SDL_Renderer* renderer, double distance, int x, int Screen_Height)
-{
-	SDL_RenderDrawLine(renderer, x, (Screen_Height / 2) * (1 - 1 / distance), x, (Screen_Height / 2) * (1 + 1 / distance) );
 }
